@@ -5,8 +5,7 @@
 -- Easy way
 
 SELECT
-dest,
-distance
+dest, distance
 FROM flights
 ORDER BY distance DESC
 LIMIT 10;
@@ -43,17 +42,32 @@ FROM Planes
 
 -- 3. What weather conditions are associated with New York City departure delays?
 
+-- join by day
 SELECT
-dep_delay, 
-precip
-FROM Flights, Weather
-ORDER BY precip DESC
+dep_delay, precip, Flights.year
+FROM Flights JOIN Weather
+ON Flights.day = Weather.day
+ORDER BY dep_delay DESC
 LIMIT 10;
+
+-- join by origin
+SELECT
+dep_delay, precip, Flights.year
+FROM Flights JOIN Weather
+ON Flights.origin = Weather.origin
+ORDER BY dep_delay DESC
+LIMIT 10;
+
+
+
+
+
 
 
 -- 4. Are older planes more likely to be delayed?
 
-
+SELECT
+arr
 
 -- 5. Ask (and if possible answer) a question that also requires joining information from two or more tables in the
 -- flights database, and/or assumes that additional information can be collected in advance of answering your question.
