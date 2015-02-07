@@ -5,11 +5,12 @@
 -- Easy way
 
 SELECT
-dest, distance
-FROM flights
+dest, distance, name
+FROM flights JOIN airports
+ON flights.dest = airports.faa
 ORDER BY distance DESC
 LIMIT 10;
-
+--Answer: Honolulu 
 
 -- Hard way (not the hardest way)
 --Strategy: find the airport nearest to NYC's antipode using the distance forumula. 
@@ -33,12 +34,21 @@ FROM Airports;
 SELECT 
 DISTINCT
 engines
-FROM Planes
+FROM planes
 
-SELECT
-DISTINCT 
-engines 
-FROM Planes
+SELECT 
+seats, engines 
+GROUP BY engines
+FROM planes
+--WHERE engines = engines
+
+SELECT 
+engines, 
+MAX(seats) AS max_seats 
+FROM planes
+GROUP BY engines
+ORDER BY engines
+
 
 -- 3. What weather conditions are associated with New York City departure delays?
 
