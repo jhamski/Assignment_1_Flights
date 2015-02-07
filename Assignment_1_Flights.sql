@@ -37,12 +37,6 @@ engines
 FROM planes
 
 SELECT 
-seats, engines 
-GROUP BY engines
-FROM planes
---WHERE engines = engines
-
-SELECT 
 engines, 
 MAX(seats) AS max_seats 
 FROM planes
@@ -62,9 +56,9 @@ LIMIT 10;
 
 -- join by origin
 SELECT
-dep_delay, precip, Flights.year
-FROM Flights JOIN Weather
-ON Flights.origin = Weather.origin
+dep_delay, precip, flights.year
+FROM flights JOIN weather
+ON flights.origin = weather.origin
 ORDER BY dep_delay DESC
 LIMIT 10;
 
@@ -77,7 +71,46 @@ LIMIT 10;
 -- 4. Are older planes more likely to be delayed?
 
 SELECT
-arr
+arr_delay, planes.year
+FROM flights JOIN planes
+ON flights.tailnum = planes.tailnum
+WHERE arr_delay > 0 
+ORDER BY arr_delay DESC
+LIMIT 10;
+
+SELECT 
+AVG(year) AS Average_Year
+FROM planes
+-- average plane year is 2000
+
+SELECT
+AVG(arr_delay) AS Average_delay, planes.year
+FROM flights JOIN planes
+ON flights.tailnum = planes.tailnum
+WHERE arr_delay > 0 
+GROUP BY planes.year
+ORDER BY planes.year;
+-- could then export to .csv for histogram 
+
+-- this doesn't account for flight volume, presumably older planes represent fewer flights. So...
+SELECT
+AVG(arr_delay) * COUNT(flights.year) AS Average_delay_times_flightcount, planes.year
+FROM flights JOIN planes
+ON flights.tailnum = planes.tailnum
+WHERE arr_delay > 0 
+GROUP BY planes.year
+ORDER BY planes.year;
+
+
+
 
 -- 5. Ask (and if possible answer) a question that also requires joining information from two or more tables in the
 -- flights database, and/or assumes that additional information can be collected in advance of answering your question.
+
+-- Which airline has the oldest planes on average?
+
+SELECT 
+AVG(flights.year), airlines.name
+FROM flights JOIN airlines
+ON flights.carrier = airlines.carrier
+GROUP BY airlines.carrier
