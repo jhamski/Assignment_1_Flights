@@ -65,9 +65,6 @@ LIMIT 10;
 
 
 
-
-
-
 -- 4. Are older planes more likely to be delayed?
 
 SELECT
@@ -110,7 +107,8 @@ ORDER BY planes.year;
 -- Which airline has the oldest planes on average?
 
 SELECT 
-AVG(flights.year), airlines.name
-FROM flights JOIN airlines
-ON flights.carrier = airlines.carrier
-GROUP BY airlines.carrier
+AVG(planes.year) AS Avg_age, carrier 
+FROM planes JOIN flights
+ON planes.tailnum = flights.tailnum
+GROUP BY flights.carrier
+ORDER BY avg_age
